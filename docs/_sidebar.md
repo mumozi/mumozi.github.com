@@ -1,5 +1,2 @@
 - **后端**
-  
-  - [Spring Boot](backend/springboot/_sidebar.md)
-  
-    
+  - [Spring Boot](springboot/_sidebar.md)
