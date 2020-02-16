@@ -77,10 +77,9 @@
 2. 实体类
 
    <details>
-
-   <summary>Department</summary>
-
-   ```java
+<summary>Department</summary>
+   
+```java
    public class Department implements Serializable {
        Integer id;
        String departmentName;
@@ -102,14 +101,14 @@
        }
    }
    ```
-
-   </details>
-
-   <details>
-
-   <summary>Employee</summary>
-
-   ```java
+   
+</details>
+   
+<details>
+   
+<summary>Employee</summary>
+   
+```java
    public class Employee {
        Integer id;
        String lastName;
@@ -158,11 +157,11 @@
        }
    }
    ```
-
-   </details>
-
+   
+</details>
    
 
+   
 3. 配置文件
 
    ```yaml
@@ -402,4 +401,95 @@ public class SpringbootMybatisApplication {
    ```
 
    访问：<http://localhost:8080/emp/list>
+   
+7. 逆向工程创建mapper
 
+   - ​	pox.xml加入插件
+
+   ```xml
+               <plugin>
+                   <groupId>org.mybatis.generator</groupId>
+                   <artifactId>mybatis-generator-maven-plugin</artifactId>
+                   <version>1.4.0</version>
+                   <configuration>
+                       <verbose>true</verbose>
+                       <overwrite>true</overwrite>
+                   </configuration>
+                   <executions>
+                       <execution>
+                           <id>Generate MyBatis Artifacts</id>
+                           <goals>
+                               <goal>generate</goal>
+                           </goals>
+                       </execution>
+                   </executions>
+                   <dependencies>
+                       <dependency>
+                           <groupId>org.mybatis.generator</groupId>
+                           <artifactId>mybatis-generator-core</artifactId>
+                           <version>1.4.0</version>
+                       </dependency>
+                   </dependencies>
+               </plugin>
+   ```
+
+   - 在resource目录下创建generatorConfig.xml文件
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <!DOCTYPE generatorConfiguration
+           PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+           "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+   <generatorConfiguration>
+       <!--导入属性配置 -->
+   
+       <!--指定特定数据库的jdbc驱动jar包的位置 -->
+       <classPathEntry
+               location="C:\Users\xxx\.m2\repository\mysql\mysql-connector-java\8.0.19\mysql-connector-java-8.0.19.jar"/>
+       <context id="DB2Tables" targetRuntime="MyBatis3">
+           <commentGenerator>
+               <property name="suppressDate" value="true"/>
+               <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+               <property name="suppressAllComments" value="true"/>
+           </commentGenerator>
+           <!--数据库链接URL，用户名、密码
+              1.一般jdbc数据库的版本6.x以上，都是com.mysql.cj.jdbc.Driver  其他的低版本就是com.mysql.cj.jdbc.Driver
+            -->
+           <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                           connectionURL="jdbc:mysql://192.168.179.128:3306/jdbc?useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;characterEncoding=utf-8"
+                           userId="root"
+                           password="123456">
+           </jdbcConnection>
+           <javaTypeResolver>
+               <property name="forceBigDecimals" value="false"/>
+           </javaTypeResolver>
+           <!-- 生成模型的包名和位置-->
+           <javaModelGenerator targetPackage="com.mayday.springboot.dao" targetProject="src/main/java">
+               <property name="enableSubPackages" value="true"/>
+               <property name="trimStrings" value="true"/>
+           </javaModelGenerator>
+           <sqlMapGenerator targetPackage="mapping" targetProject="src/main/resources">
+               <property name="enableSubPackages" value="true"/>
+           </sqlMapGenerator>
+   
+           <javaClientGenerator type="XMLMAPPER" targetPackage="com.mayday.springboot.mapping"
+                                targetProject="src/main/java">
+               <property name="enableSubPackages" value="true"/>
+           </javaClientGenerator>
+   
+           <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
+           <table tableName="department" domainObjectName="Department" enableCountByExample="false"
+                  enableUpdateByExample="false"
+                  enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+           <table tableName="employee" domainObjectName="Employee" enableCountByExample="false"
+                  enableUpdateByExample="false"
+                  enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+       </context>
+   </generatorConfiguration>
+   ```
+
+!> "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"报错红字，只需要添加外部声明就行了。IDEA红色提示里选Fetch external resource
+
+执行成功后生成以下文件
+
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200216124728.png)

@@ -43,7 +43,7 @@ spring:
 
 修改实测：
 
-> ```java
+> ```yml
 > spring:
 >   datasource:
 >     username: root
@@ -286,6 +286,19 @@ spring:
         login-username: admin
         login-password: root
         allow: 127.0.0.1
+       filter:
+        # 配置StatFilter
+        stat:
+          db-type: mysql
+          log-slow-sql: true
+          slow-sql-millis: 5000
+        # 配置WallFilter
+        wall:
+          enabled: true
+          db-type: mysql
+          config:
+            delete-allow: false
+            drop-table-allow: false
 ```
 
 后台页面，访问<http://localhost:8080/druid/login.html>
