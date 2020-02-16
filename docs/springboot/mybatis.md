@@ -402,10 +402,10 @@ public class SpringbootMybatisApplication {
 
    访问：<http://localhost:8080/emp/list>
    
-7. 逆向工程创建mapper
-
-   - ​	pox.xml加入插件
-
+   ##  逆向工程创建mapper
+   
+   1. pox.xml加入插件
+   
    ```xml
                <plugin>
                    <groupId>org.mybatis.generator</groupId>
@@ -432,9 +432,9 @@ public class SpringbootMybatisApplication {
                    </dependencies>
                </plugin>
    ```
-
-   - 在resource目录下创建generatorConfig.xml文件
-
+   
+   2. 在resource目录下创建generatorConfig.xml文件
+   
    ```xml
    <?xml version="1.0" encoding="UTF-8"?>
    <!DOCTYPE generatorConfiguration
@@ -490,6 +490,6 @@ public class SpringbootMybatisApplication {
 
 !> "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"报错红字，只需要添加外部声明就行了。IDEA红色提示里选Fetch external resource
 
-执行成功后生成以下文件
+3. 执行成功后生成以下文件
 
 ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200216124728.png)
