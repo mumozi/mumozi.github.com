@@ -2,7 +2,7 @@
 
 **SpringData：**
 
-![SpringData](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/20180306105412.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200218101957.png)
 
 ## 依赖
 
@@ -28,7 +28,7 @@
     </dependencies>
 ```
 
-![1574481366615](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574481366615.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200218102031.png)
 
 
 
@@ -104,20 +104,50 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 spring:
   datasource:
     username: root
-    password: root
-    url: jdbc:mysql://172.16.145.137:3306/springboot
+    password: 123456
+    url: jdbc:mysql://192.168.179.128:3306/jdbc?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    hibernate:
-      ddl-auto: update
+    #控制台显示sql
     show-sql: true
+    hibernate:
+      #更新或者创建数据表结构
+      ddl-auto: update
 ```
 
-
+!>注意观察yml配置文件属性是否写错（易错）
 
 ## Controller
 
 ```java
+package com.mayday.jpa.controller;
+
+
+import com.mayday.jpa.entity.User;
+import com.mayday.jpa.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class UserController {
+
+    @Autowired
+    UserRepository userRepository;
+
+    @GetMapping("/user/{id}")
+    public User getUser(@PathVariable("id") Integer id) {
+        User user = userRepository.getOne(id);
+        return user;
+    }
+
+    @GetMapping("/user")
+    public User insertUser(User user) {
+        User save = userRepository.save(user);
+        return save;
+    }
+}
 
 ```
 
@@ -153,7 +183,5 @@ spring:
    public class User 
    ```
 
-   
-
-
+   !>getOne：当我查询一个不存在的id数据时，直接抛出异常，因为它返回的是一个引用，简单点说就是一个代理对象。所以说，如果想无论如何都有一个返回，那么就用findOne,否则使用getOne。 只是在2.0版本中没有findOne(id) 但是有 findById(id) 只是要稍微处理一下，需要用get()方法。
 
