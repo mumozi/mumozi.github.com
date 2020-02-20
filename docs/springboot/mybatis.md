@@ -79,6 +79,7 @@
    <details>
 <summary>Department</summary>
    
+   
 ```java
    public class Department implements Serializable {
        Integer id;
@@ -100,14 +101,14 @@
            this.departmentName = departmentName;
        }
    }
-   ```
-   
+```
+
 </details>
-   
+
 <details>
-   
+
 <summary>Employee</summary>
-   
+
 ```java
    public class Employee {
        Integer id;
@@ -156,12 +157,12 @@
            this.d_id = d_id;
        }
    }
-   ```
-   
-</details>
-   
+```
 
-   
+</details>
+
+
+
 3. 配置文件
 
    ```yaml
@@ -402,7 +403,7 @@ public class SpringbootMybatisApplication {
 
    访问：<http://localhost:8080/emp/list>
    
-   ##  逆向工程创建mapper
+   ## 逆向工程创建mapper
    
    1. pox.xml加入插件
    

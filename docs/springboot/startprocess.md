@@ -1,6 +1,6 @@
 # SpringBoot启动流程
 
-![1574497298469](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574497298469.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200218115056.png)
 
 ## 启动原理
 
@@ -65,12 +65,14 @@
        }
    ```
 
-   ![1574503716694](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574503716694.png)
+   
+
+   ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200218115654.png)
 
    <details>
 
    <summary>2.1 判断是不是web 应用</summary>
-
+   
    ```java
        static WebApplicationType deduceFromClasspath() {
            if (ClassUtils.isPresent("org.springframework.web.reactive.DispatcherHandler", (ClassLoader)null) && !ClassUtils.isPresent("org.springframework.web.servlet.DispatcherServlet", (ClassLoader)null) && !ClassUtils.isPresent("org.glassfish.jersey.servlet.ServletContainer", (ClassLoader)null)) {
@@ -88,7 +90,7 @@
    
                return SERVLET;
            }
-       }
+    }
    ```
 
    </details>
@@ -96,7 +98,7 @@
    <details>
 
    <summary>2.2 getSpringFactoriesInstances(ApplicationContextInitializer.class)</summary>
-
+   
    ```java
        private <T> Collection<T> getSpringFactoriesInstances(Class<T> type) {
            //调用下面重载方法，type：ApplicationContextInitializer.class
@@ -111,7 +113,7 @@
            List<T> instances = this.createSpringFactoriesInstances(type, parameterTypes, classLoader, args, names);
            AnnotationAwareOrderComparator.sort(instances);
            return instances; //返回到2 set
-       }
+    }
    ```
 
    <details>
@@ -121,10 +123,10 @@
    ![1574499682826](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574499682826.png)
 
       上图65行中调用重载的方法：
-
+   
       ```java
       //把类路径下所有META‐INF/spring.factories中的配置都存储起来，并返回，见下图
-      (List)loadSpringFactories(classLoader)
+   (List)loadSpringFactories(classLoader)
       ```
 
       ![1574501479198](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574501479198.png)
@@ -142,7 +144,7 @@
    <details>
 
    <summary>2.2.2</summary>
-
+   
    ```java
    private <T> List<T> createSpringFactoriesInstances(Class<T> type, Class<?>[] parameterTypes, ClassLoader classLoader, Object[] args, Set<String> names) {
        List<T> instances = new ArrayList(names.size());
@@ -163,11 +165,11 @@
        }
    
        return instances;
-   }
+}
    ```
 
    ![1574502740682](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574502740682.png)
-
+   
    返回到2.2 `this.setInitializers(ApplicationContextInitializer类型对象的集合)`
 
 
