@@ -465,15 +465,15 @@ public class SpringbootMybatisApplication {
                <property name="forceBigDecimals" value="false"/>
            </javaTypeResolver>
            <!-- 生成模型的包名和位置-->
-           <javaModelGenerator targetPackage="com.mayday.springboot.dao" targetProject="src/main/java">
+           <javaModelGenerator targetPackage="com.mayday.springboot.entity" targetProject="src/main/java">
                <property name="enableSubPackages" value="true"/>
                <property name="trimStrings" value="true"/>
            </javaModelGenerator>
-           <sqlMapGenerator targetPackage="mapping" targetProject="src/main/resources">
+           <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
                <property name="enableSubPackages" value="true"/>
            </sqlMapGenerator>
    
-           <javaClientGenerator type="XMLMAPPER" targetPackage="com.mayday.springboot.mapping"
+           <javaClientGenerator type="XMLMAPPER" targetPackage="com.mayday.springboot.dao"
                                 targetProject="src/main/java">
                <property name="enableSubPackages" value="true"/>
            </javaClientGenerator>
@@ -493,4 +493,46 @@ public class SpringbootMybatisApplication {
 
 3. 执行成功后生成以下文件
 
-![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200216124728.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200221161525.png)
+
+4.设置配置文件mybatis-config.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <package name="com.mayday.springboot.entity"/>
+    </typeAliases>
+</configuration>
+```
+
+5.配置文件application.properties（等同于yml）
+
+```properties
+spring.datasource.url=jdbc:mysql://192.168.31.222:3306/jdbc?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf-8
+spring.datasource.username=root
+spring.datasource.password=123456
+#spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+mybatis.config-location=classpath:mybatis-config.xml
+mybatis.mapper-locations=classpath:mapper/*.xml
+```
+
+6.主程序SpringbootApplication
+
+```java
+
+/**
+ * mappperscan扫描mapper类
+ */
+
+@MapperScan("com.mayday.springboot.dao")
+@SpringBootApplication
+public class SpringbootApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringbootApplication.class, args);
+    }
+
+}
+```
