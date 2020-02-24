@@ -58,3 +58,5 @@ $params$
 ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200221232023.png)
 
 !>其中params需要写脚本，内容如下:groovyScript("def result=''; def params=\"${_1}\".replaceAll('[\\\\[|\\\\]|\\\\s]', '').split(',').toList(); for(i = 0; i < params.size(); i++) {result+=' * @param ' + params[i] + ((i < params.size() - 1) ? '\\n' : '')}; return result", methodParameters())
+
+!>如果注释有红框可以勾选skip if default；

@@ -17,4 +17,5 @@
   - [SpringBoot启动流程](springboot/startprocess.md)
   - [自定义Starter](springboot/customizestarter.md)
   - [高级-缓存](springboot/cache.md)
+  - [高级-消息](springboot/rabbitmq.md)
 

@@ -266,3 +266,93 @@ public Employee getEmpByLastName(String lastName) {
  *   			2、默认创建的 RedisCacheManager 操作redis的时候使用的是 RedisTemplate<Object, Object>
  *   			3、RedisTemplate<Object, Object> 是 默认使用jdk的序列化机制
  *      4）、自定义CacheManager；
+
+1.docker安装
+
+```shell
+docker  search redis
+docker pull redies
+docker images
+docker run -d -p 6379:6379 --name redies01 redis
+```
+
+2.pox文件引入架包
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+```
+
+3.配置redis
+
+```properties
+spring.datasource.url=jdbc:mysql://192.168.31.222:3306/jdbc?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf-8
+spring.datasource.username=root
+spring.datasource.password=123456
+#spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+mybatis.config-location=classpath:mybatis-config.xml
+mybatis.mapper-locations=classpath:mapper/*.xml
+#指定redis地址
+spring.redis.host=192.168.31.222
+```
+
+4.测试
+
+```java
+@SpringBootTest
+class SpringbootApplicationTests {
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;//操作k-v字符串的
+
+    @Autowired
+    RedisTemplate redisTemplate;//k-v都是对象
+
+    @Resource
+    EmployeeMapper employeeMapper;
+
+    /**
+     * Redis常见的五大数据类型
+     * String（字符串）、List（列表）、Set（集合）、Hash（散列）、ZSet（有序集合）
+     * stringRedisTemplate.opsForValue()[String（字符串）]
+     * stringRedisTemplate.opsForList()[List（列表）]
+     * stringRedisTemplate.opsForSet()[Set（集合）]
+     * stringRedisTemplate.opsForHash()[Hash（散列）]
+     * stringRedisTemplate.opsForZSet()[ZSet（有序集合）]
+     */
+    @Test
+    public void test01() {
+        //给redis中保存数据
+//        stringRedisTemplate.opsForValue().append("msg", "hello");
+//        String msg = stringRedisTemplate.opsForValue().get("msg");
+//        System.out.println(msg);
+
+//        stringRedisTemplate.opsForList().leftPush("mylist", "1");
+//        stringRedisTemplate.opsForList().leftPush("mylist", "2");
+    }
+
+    //测试保存对象
+    @Test
+    public void test02() {
+        Employee empById = employeeMapper.selectByPrimaryKey(1);
+        //默认如果保存对象，使用jdk序列化机制，序列化后的数据保存到redis中
+        //public class Employee implements Serializable {}
+        redisTemplate.opsForValue().set("emp-01", empById);
+        //1、将数据以json的方式保存
+        //(1)自己将对象转为json
+        //(2)redisTemplate默认的序列化规则；改变默认的序列化规则；
+//        empRedisTemplate.opsForValue().set("emp-01",empById);
+    }
+
+    @Test
+    void contextLoads() {
+
+
+    }
+
+}
+```
+
+!>1.5跟2.4原理不一样，自行百度变更。
