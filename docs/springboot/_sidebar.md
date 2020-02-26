@@ -18,4 +18,7 @@
   - [自定义Starter](springboot/customizestarter.md)
   - [高级-缓存](springboot/cache.md)
   - [高级-消息](springboot/rabbitmq.md)
+  - [高级-检索](springboot/elasticsearch.md)
+  - [高级-任务](springboot/task.md)
+  - [高级-安全](springboot/safe.md)
 
