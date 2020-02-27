@@ -5,6 +5,7 @@
   - [String类、static关键字、Arrays类、Math类](java/static.md)
   - [继承、super、this、抽象类](java/super.md)
   - [红包实例](java/testRed.md)
+  - [接口、多态](java/interface.md)
 
 
 
