@@ -12,6 +12,7 @@
   - [List、Set、数据结构、Collections](java/list.md)
   - [Map集合](java/map.md)
   - [异常、线程](java/exception.md)
+  - [线程、同步](java/thread.md)
 
 
 
