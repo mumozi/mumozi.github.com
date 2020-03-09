@@ -288,3 +288,26 @@ db.password=123456
  额外插件跳转
 
 ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200305143659.png)
+
+### 分页
+
+```xml
+<!--        mybatis分页插件-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.1.11</version>
+        </dependency>
+```
+
+## 工具补充
+
+### idea补充
+
+防止spring bean注入报错（实际运行没错）变更等级error为warning
+
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200309153148.png)
+
+### 谷歌网页插件
+
+ restlet client
