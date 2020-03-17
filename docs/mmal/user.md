@@ -447,7 +447,6 @@ public class Const {
      * @param user
      * @return
      */
-    @Autowired
     public ServerResponse<String> register(User user) {
         ServerResponse<String> validResponse = this.checkValid(user.getUsername(), Const.USERNAME);
         if (!validResponse.isSuccess()) {
@@ -603,7 +602,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class TokenCache {
     private static Logger logger = LoggerFactory.getLogger(TokenCache.class);
-
+ public static final String TOKEN_PREFIX = "token_";
     //LRU算法
     private static LoadingCache<String, String> localCache = CacheBuilder.newBuilder().initialCapacity(1000).maximumSize(10000).expireAfterAccess(12, TimeUnit.HOURS)
             .build(new CacheLoader<String, String>() {
@@ -686,15 +685,238 @@ String selectQuestionByUsername(String username);
     }
 ```
 
+### 登陆忘记密码重置密码
+
+```java
+/**
+     * 重置密码
+     *
+     * @param username
+     * @param passwordNew
+     * @param forgetToken
+     * @return
+     */
+    public ServerResponse<String> forgetRestPassword(String username, String passwordNew, String forgetToken) {
+        return iUserService.forgetRestPassword(username, passwordNew, forgetToken);
+    }
+```
+
+#### 实现类
+
+```java
+ /**
+     * 重置密码
+     *
+     * @param username
+     * @param passwordNew
+     * @param forgetToken
+     * @return
+     */
+    public ServerResponse<String> forgetRestPassword(String username, String passwordNew, String forgetToken) {
+        if (StringUtils.isBlank(forgetToken)) {
+            return ServerResponse.createByErrorMessage("参数错误，token需要传递");
+        }
+
+        ServerResponse<String> validResponse = this.checkValid(username, Const.USERNAME);
+        if (validResponse.isSuccess()) {
+            //用户不存在，校验成功说明数据库不存在此用户名
+            return ServerResponse.createByErrorMessage("用户不存在");
+        }
+
+        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
+        if (StringUtils.isBlank(token)) {
+            return ServerResponse.createByErrorMessage("token无效或者过期");
+        }
+
+        if (StringUtils.equals(forgetToken, token)) {
+            String md5Password = MD5Util.MD5EncodeUtf8(passwordNew);
+            int rowCount = userMapper.updatePasswordByUsername(username, md5Password);
+            if (rowCount > 0) {
+                return ServerResponse.createBySuccessMessage("修改密码成功");
+            } else {
+                return ServerResponse.createByErrorMessage("token错误，请重新获取重置密码的token");
+            }
+        }
+        return ServerResponse.createByErrorMessage("修改密码失败");
+    }
+```
+
+`int updatePasswordByUsername(@Param("username") String username, @Param("passwordNew") String passwordNew);`
+
+```xml
+ <update id="updatePasswordByUsername" parameterType="map">
+    update mmall_user
+    SET password = #{passwordNew},update_time = now()
+    where username = #{username}
+    </update>
+```
+
 
 
 ## 提交问题答案
 
 ## 重置密码
 
+### 登陆成功重置密码
+
+```java
+ /**
+     * 登陆状态下重置密码
+     *
+     * @param passwordOld
+     * @param passwordNew
+     * @param user
+     * @return
+     */
+    public ServerResponse<String> resetPassword(String passwordOld, String passwordNew, User user) {
+        //防止横向越权，要校验一下这个用户的旧密码，一定要指定是这个用户，因为我们会查询一个count（1），如果不指定id，那么结果就是true，count>0
+        int resultCount = userMapper.checkPassword(MD5Util.MD5EncodeUtf8(passwordOld), user.getId());
+        if (resultCount == 0) {
+            return ServerResponse.createByErrorMessage("旧密码错误");
+        }
+
+        user.setPassword(MD5Util.MD5EncodeUtf8(passwordNew));
+        int updateCount = userMapper.updateByPrimaryKeySelective(user);
+        if (updateCount > 0) {
+            return ServerResponse.createBySuccessMessage("密码更新成功");
+        }
+        return ServerResponse.createByErrorMessage("密码更新失败");
+    }
+```
+
+#### 业务层
+
+```java
+/**
+     * 登陆状态下重置密码
+     *
+     * @param session
+     * @param passwordOld
+     * @param passwordNew
+     * @return
+     */
+    @RequestMapping(value = "reset_password.do", method = RequestMethod.GET)
+    public ServerResponse<String> resetPassword(HttpSession session, String passwordOld, String passwordNew) {
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse.createByErrorMessage("用户未登录");
+        }
+        return iUserService.resetPassword(passwordOld, passwordNew, user);
+    }
+```
+
+`int checkPassword(@Param("password") String password, @Param("userId") Integer userId);`
+
+```xml
+<select id="checkPassword" resultType="int" parameterType="map">
+        SELECT
+        count(1)
+        from mmall_user
+        where password = #{password}
+        and id = #{userId}
+    </select>
+```
+
+
+
 ## 获取用户信息
 
+```java
+ /**
+     * 获取当前登陆用户信息（密码空）
+     *
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "get_info.do", method = RequestMethod.POST)
+    public ServerResponse<User> get_info(HttpSession session) {
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if (currentUser == null) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "未登录,需要强制登录status=10");
+        }
+        return iUserService.getInfo(currentUser.getId());
+    }
+```
+
+```java
+ /**
+     * 获取用户信息
+     *
+     * @param userId
+     * @return
+     */
+    public ServerResponse<User> getInfo(Integer userId) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        if (user == null) {
+            return ServerResponse.createByErrorMessage("找不到当前用户");
+        }
+        user.setPassword(EMPTY);
+        return ServerResponse.createBySuccess(user);
+    }
+```
+
+
+
 ## 更新用户信息
+
+### 服务层
+
+```java
+    /**
+     * 更新个人信息
+     *
+     * @param user
+     * @return
+     */
+    public ServerResponse<User> updateInfo(User user) {
+        //username是不能更新的
+        //email也是要进行一个校验，校验是否存在且不是挡球用户的
+        int resultCount = userMapper.checkEmailByUserId(user.getEmail(), user.getId());
+        if (resultCount > 0) {
+            return ServerResponse.createByErrorMessage("email已存在，请更换email再尝试更新");
+        }
+        User updateUser = new User();
+        updateUser.setId(user.getId());
+        updateUser.setEmail(user.getEmail());
+        updateUser.setPhone(user.getPhone());
+        updateUser.setQuestion(user.getQuestion());
+        updateUser.setAnswer(user.getAnswer());
+
+        int updateCount = userMapper.updateByPrimaryKeySelective(updateUser);
+        if (updateCount > 0) {
+            return ServerResponse.createBySuccessMessage("更新个人信息成功");
+        }
+        return ServerResponse.createByErrorMessage("更新个人信息失败");
+    }
+
+```
+
+### 业务层
+
+```java
+    /**
+     * 个人信息更新
+     *
+     * @param session
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "update_info.do", method = RequestMethod.GET)
+    public ServerResponse<User> updateInfo(HttpSession session, User user) {
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if (currentUser == null) {
+            return ServerResponse.createByErrorMessage("用户未登录");
+        }
+        user.setId(currentUser.getId());
+        ServerResponse<User> response = iUserService.updateInfo(user);
+        if (response.isSuccess()) {
+            session.setAttribute(Const.CURRENT_USER, response.getData());
+        }
+        return response;
+    }
+```
+
+
 
 ## 退出登陆
 
@@ -714,3 +936,72 @@ String selectQuestionByUsername(String username);
     }
 ```
 
+## 调试
+
+### 问题一
+
+`Caused by: java.lang.IllegalStateException: Cannot convert value of type 'com.github.pagehelper.PageHelper' to required type 'org.apache.ibatis.plugin.Interceptor' for property 'plugins[0]': no matching editors or conversion strategy found`
+
+```xml
+<!-- 分页插件 -->
+<property name="plugins">
+    <array>
+        <bean class="com.github.pagehelper.PageInterceptor">
+            <!--                    <property name="properties">-->
+            <!--                        <value>-->
+            <!--                            dialect=mysql-->
+            <!--                        </value>-->
+            <!--                    </property>-->
+        </bean>
+    </array>
+</property>
+```
+
+### 问题2
+
+`org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter': Cannot create inner bean 'org.springframework.http.converter.json.MappingJacksonHttpMessageConverter#0' of type [org.springframework.http.converter.json.MappingJacksonHttpMessageConverter] while setting bean property 'messageConverters' with key [1]; nested exception is org.springframework.beans.factory.CannotLoadBeanClassException: Cannot find class [org.springframework.http.converter.json.MappingJacksonHttpMessageConverter] for bean with name 'org.springframework.http.converter.json.MappingJacksonHttpMessageConverter#0' defined in ServletContext resource [/WEB-INF/dispatcher-servlet.xml]; nested exception is java.lang.ClassNotFoundException: org.springframework.http.converter.json.MappingJacksonHttpMessageConverter
+	`
+
+```xml
+ <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+```
+
+```xml
+<dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.10.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.10.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.10.2</version>
+        </dependency>
+```
+
+## 接口测试
+
+### tomcat
+
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200317150414.png)
+
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200317150458.png)
+
+### 浏览器
+
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200317150626.png)
+
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200317150649.png)
+
+!>test接口时候要保存每一条接口url，方便管理后续调试。
