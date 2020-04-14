@@ -63,6 +63,20 @@
 </profile>
 ```
 
+!>如果更新太慢可以更换国内仓库；配置如下。
+
+```xml
+<mirrors>
+	   <!-- 阿里云仓库 -->
+        <mirror>
+            <id>nexus-aliyun</id>
+            <mirrorOf>*</mirrorOf>
+            <name>Nexus aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+        </mirror>
+  </mirrors>
+```
+
 
 
 ## 创建一个maven工程
@@ -73,7 +87,7 @@
        <parent>
            <groupId>org.springframework.boot</groupId>
            <artifactId>spring-boot-starter-parent</artifactId>
-           <version>2.2.1.RELEASE</version>
+           <version>2.2.4.RELEASE</version>
            <relativePath/>
        </parent>
    
@@ -88,25 +102,25 @@
 2. 编写一个主程序；启动Spring Boot应用
 
    ```java
-   package cn.clboy.springboot;
+   package com.mayday.hello;
    
    import org.springframework.boot.SpringApplication;
    import org.springframework.boot.autoconfigure.SpringBootApplication;
    
    /**
-    * @Author cloudlandboy
-    * @Date 2019/11/13 下午2:58
-    * @Since 1.0.0
-    * springBootApplication：标注一个主程序类，表示这个是一个Springboot应用
+    * @author Mayday
+    * @description springBootApplication：标注一个主程序类，表示这个是一个Springboot应用
+    * @date 2020/4/12 19:11
+    * @return
     */
-   
    @SpringBootApplication
-   public class HelloWorldMainApplication {
+   public class HelloApplication {
    
        public static void main(String[] args) {
            //启动
-           SpringApplication.run(HelloWorldMainApplication.class, args);
+           SpringApplication.run(HelloApplication.class, args);
        }
+   
    }
    ```
 
@@ -115,26 +129,26 @@
 3. 编写一个Controller
 
    ```java
-   package cn.clboy.springboot.controller;
+   package com.mayday.hello.controller;
    
    import org.springframework.web.bind.annotation.RequestMapping;
    import org.springframework.web.bind.annotation.RestController;
    
    /**
-    * @Author cloudlandboy
-    * @Date 2019/11/13 下午3:05
-    * @Since 1.0.0
-    * RestController：是spring4里的新注解，是@ResponseBody和@Controller的缩写。
+    * @description:
+    * @RestController：是spring4里的新注解，是@ResponseBody和@Controller的缩写。
+    * @author: MayDay
+    * @time: 2020/4/12 19:15
     */
-   
    @RestController
    public class HelloController {
    
        @RequestMapping("/hello")
-       public String hello(){
+       public String hello() {
            return "hello SpringBoot,this is my first Application";
        }
    }
+   
    ```
 
 4. 运行主程序Main方法测试
@@ -176,7 +190,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.1.RELEASE</version>
+        <version>2.2.4.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -215,11 +229,10 @@ Spring Boot将所有的功能场景都抽取出来，做成一个个的starters�
 
 ```java
 @SpringBootApplication
-public class HelloWorldMainApplication {
-
+public class HelloApplication {
     public static void main(String[] args) {
         //启动
-        SpringApplication.run(HelloWorldMainApplication.class, args);
+        SpringApplication.run(HelloApplication.class, args);
     }
 }
 ```
@@ -305,11 +318,11 @@ public @interface SpringBootApplication
 
        导入的组件由`org.springframework.boot.autoconfigure.AutoConfigurationPackages.Registrar`将主配置类（<mark>@SpringBootApplication标注的类</mark>）的所在包及下面所有子包里面的所有组件扫描到Spring容器；
 
-       ![DEBUG](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573637120233.png)
+       ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200412192758.png)
 
        这里controller包是在主程序所在的包下，所以会被扫描到，我们在springboot包下创建一个test包，把主程序放在test包下，这样启动就只会去扫描test包下的内容而controller包就不会被扫描到，再访问开始的hello就是404
 
-       ![DEBUG](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573637728857.png)
+       
 
    - `@Import({AutoConfigurationImportSelector.class})`
 
@@ -317,8 +330,6 @@ public @interface SpringBootApplication
 
      有了自动配置类，免去了我们手动编写配置注入功能组件等的工作；
 
-     ![Configuration](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573638685562.png)
-
-
+     ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200412192952.png)
 
 Spring Boot在启动的时候从类路径下的META-INF/spring.factories中获取EnableAutoConfiguration指定的值，将这些值作为自动配置类导入到容器中，自动配置类就生效，帮我们进行自动配置工作；以前我们需要自己配置的东西，自动配置类都帮我们完成了；

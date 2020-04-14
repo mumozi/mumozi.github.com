@@ -10,23 +10,23 @@ IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目
 
 1. 创建项目时选择Spring Initializr
 
-   ![idea01](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573639771931.png)
+   ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200412193103.png)
 
    
 
 2. 完善项目信息
 
-   ![idea02](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573639923504.png)
+   ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200412194927.png)
 
    !> 出现 **Artifact contains illegal characters** 是因为`Artifact`中使用了大写，只能是全小写，单词之间用`-`分隔
 
 3. 选择需要的starter
 
-   ![idea03](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573640773365.png)
+   ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200412195003.png)
 
 4. 创建完成后 不要的文件可以删除
 
-   ![idea04](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573641023432.png)
+   ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413165943.png)
 
 
 
@@ -36,21 +36,19 @@ IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目
 
 1. 需要安装插件，或者使用STS版本
 
+   ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413170838.png)
+
+   ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413170853.png)
+
 2. 创建项目时选择Spring Starter Project
 
-   ![eclipse01](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573643167357.png)
+   ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413171114.png)
 
 3. 完善信息
 
-   ![eclipse02](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573643396117.png)
-
 4. 选择需要的选择需要的starter
 
-   ![eclipse03](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573643505863.png)
-
-
-
-
+   
 
 **默认生成的Spring Boot项目**
 

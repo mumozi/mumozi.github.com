@@ -123,9 +123,6 @@ public class Pet {
 
 ```java
 /**
- * @Author cloudlandboy
- * @Date 2019/11/13 下午8:06
- * @Since 1.0.0
  * 将配置文件中配置的每一个属性的值，映射到这个组件中
  *
  * ConfigurationProperties：告诉SpringBoot将本类中的所有属性和配置文件中相关的配置进行绑定；
@@ -226,7 +223,7 @@ public class Person {
 
 提示：
 
-![提示](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573648927366.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413204717.png)
 
 需要导入配置文件处理器，以后编写配置就有提示了
 
@@ -314,7 +311,7 @@ person.pet.age=10
 在设置中找到`File Encodings`，将配置文件字符集改为`UTF-8`，并勾选：
 - [x] `Transparent native-to-ascii conversion`
 
-![乱码解决](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573695616496.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413205015.png)
 
 
 
@@ -365,11 +362,11 @@ public class Person {
 
 `@ConfigurationProperties`支持校验，如果校验不通过，会抛出异常
 
-![数据校验](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573716216690.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413205601.png)
 
 `@value`注解不支持数据校验
 
-![数据校验](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573716427494.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413205341.png)
 
 
 
@@ -377,7 +374,7 @@ public class Person {
 
 `@value`注解无法注入map等对象的复杂类型，但`list、数组可以`
 
-![1573716770263](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573716770263.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413205711.png)
 
 
 
@@ -387,11 +384,11 @@ public class Person {
 
 springboot默认加载的配置文件名是`application`，如果配置文件名不是这个是不会被容器加载的，所以这里Person并没有被注入任何属性值
 
-![1573718577827](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573718577827.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413205811.png)
 
 使用`@PropertySource({"classpath:person.properties"})`指定加载`person.properties`配置文件
 
-![1573718679208](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573718679208.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413205834.png)
 
 
 
@@ -405,13 +402,13 @@ springboot默认加载的配置文件名是`application`，如果配置文件名
 
 Spring Boot里面没有Spring的配置文件，我们自己编写的配置文件，也不能自动识别；
 
-![1573719440710](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573719440710.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413210010.png)
 
 
 
 想让Spring的配置文件生效，加载进来；@**ImportResource**标注在一个配置类上
 
-![1573720006428](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573720006428.png)
+![image-20200413210057553](properties.assets/image-20200413210057553.png)
 
 !> 注意！这个注解是放在主入口函数的类上，而不是测试类上
 
@@ -435,10 +432,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @Author cloudlandboy
- * @Date 2019/11/14 下午4:33
- * @Since 1.0.0
- *
  * Configuration：指明当前类是一个配置类；就是来替代之前的Spring配置文件
  */
 
@@ -475,17 +468,17 @@ ${random.int[1024,65536]}
 
 
 
-![1573721695426](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573721695426.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413210305.png)
 
 
 
 可以引用在配置文件中配置的其他属性的值，如果使用一个没有在配置文件中的属性，则会原样输出
 
-![1573722018302](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573722018302.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413210340.png)
 
 可以使用`:`指定默认值
 
-![1573722098119](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573722098119.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413210410.png)
 
 
 
@@ -500,13 +493,13 @@ Profile是Spring对不同环境提供不同配置功能的支持，可以通过�
 - application-dev.properties
 - application-prod.properties
 
-![1573723830627](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573723830627.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413210531.png)
 
 程序启动时会默认加载`application.properties`，启动的端口就是8080
 
 可以在主配置文件中指定激活哪个配置文件
 
-![1573724084979](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573724084979.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413210607.png)
 
 
 
@@ -532,7 +525,7 @@ spring:
   profiles: prod
 ```
 
-![1573724588671](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573724588671.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413210636.png)
 
 
 
@@ -546,7 +539,7 @@ spring:
    java -jar xxx.jar --spring.profiles.active=dev；
    ```
 
-   ![1573724952868](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573724952868.png)
+   ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413210739.png)
 
 3. 虚拟机参数
 
@@ -554,9 +547,7 @@ spring:
    -Dspring.profiles.active=dev
    ```
 
-   ![1573725631649](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573725631649.png)
-
-
+   ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413210829.png)
 
 
 
@@ -580,7 +571,7 @@ file: ./config/
 
 SpringBoot会从这四个位置全部加载主配置文件；**互补配置**；
 
-![1573728449451](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573728449451.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413210904.png)
 
 
 
@@ -658,4 +649,4 @@ SpringBoot会从这四个位置全部加载主配置文件；**互补配置**；
 
 [参考官方文档](https://docs.spring.io/spring-boot/docs/2.2.1.RELEASE/reference/htmlsingle/#boot-features-external-config)
 
-![1573735371567](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573735371567.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200413210949.png)
