@@ -19,6 +19,7 @@
   - [缓冲流、转换流、序列化流、打印流](java/buffer.md)
   - [网络编程](java/internet.md)
   - [函数式接口](java/function.md)
+  - [Stream流、方法引用](java/stream.md)
 
 
 
