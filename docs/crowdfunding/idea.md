@@ -127,3 +127,119 @@ git push origin HEAD -u
 
 ```
 
+### 5.数据库
+
+```sql
+DROP TABLE IF EXISTS `t_admin`;
+CREATE TABLE `t_admin`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `login_acct` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '登陆账号',
+  `user_pswd` char(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '登陆密码',
+  `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '昵称',
+  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '邮件地址',
+  `create_time` datetime(0) NOT NULL COMMENT '创建时间',
+  `update_time` datetime(0) NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+```
+
+### 6.逆向工程
+
+1. pox.xml加入插件
+
+   ```xml
+               <plugin>
+                   <groupId>org.mybatis.generator</groupId>
+                   <artifactId>mybatis-generator-maven-plugin</artifactId>
+                   <version>1.4.0</version>
+                   <configuration>
+                       <verbose>true</verbose>
+                       <overwrite>true</overwrite>
+                   </configuration>
+                   <executions>
+                       <execution>
+                           <id>Generate MyBatis Artifacts</id>
+                           <goals>
+                               <goal>generate</goal>
+                           </goals>
+                       </execution>
+                   </executions>
+                   <dependencies>
+                       <dependency>
+                           <groupId>org.mybatis.generator</groupId>
+                           <artifactId>mybatis-generator-core</artifactId>
+                           <version>1.4.0</version>
+                       </dependency>
+                   </dependencies>
+               </plugin>
+   ```
+
+   2. 在resource目录下创建generatorConfig.xml文件
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <!DOCTYPE generatorConfiguration
+           PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+           "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+   <generatorConfiguration>
+       <!-- mybatis-generator:generate -->
+       <!--指定特定数据库的jdbc驱动jar包的位置 -->
+       <context id="maydayTables" targetRuntime="MyBatis3">
+           <commentGenerator>
+               <!-- 是否去除自动生成的注释 true:是;false:否 -->
+               <property name="suppressAllComments" value="true"/>
+           </commentGenerator>
+   
+           <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+           <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                           connectionURL="jdbc:mysql://192.168.0.108:3306/project_crowd?useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;characterEncoding=utf-8"
+                           userId="root"
+                           password="123456">
+           </jdbcConnection>
+   
+           <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL
+               和 NUMERIC 类型解析为java.math.BigDecimal -->
+           <javaTypeResolver>
+               <property name="forceBigDecimals" value="false"/>
+           </javaTypeResolver>
+   
+           <!-- targetProject:生成Entity类的路径 -->
+           <javaModelGenerator targetProject=".\src\main\java"
+                               targetPackage="com.mayday.crowd.entity">
+               <!-- enableSubPackages:是否让schema作为包的后缀 -->
+               <property name="enableSubPackages" value="false"/>
+               <!-- 从数据库返回的值被清理前后的空格 -->
+               <property name="trimStrings" value="true"/>
+           </javaModelGenerator>
+   
+           <!-- targetProject:XxxMapper.xml映射文件生成的路径 -->
+           <sqlMapGenerator targetProject=".\src\main\java"
+                            targetPackage="com.mayday.crowd.mapper">
+               <!-- enableSubPackages:是否让schema作为包的后缀 -->
+               <property name="enableSubPackages" value="false"/>
+           </sqlMapGenerator>
+   
+           <!-- targetPackage：Mapper接口生成的位置 -->
+           <javaClientGenerator type="XMLMAPPER"
+                                targetProject=".\src\main\java"
+                                targetPackage="com.mayday.crowd.mapper">
+               <!-- enableSubPackages:是否让schema作为包的后缀 -->
+               <property name="enableSubPackages" value="false"/>
+           </javaClientGenerator>
+   
+           <!-- 数据库表名字和我们的entity类对应的映射指定 -->
+           <table tableName="t_admin" domainObjectName="Admin"/>
+   
+       </context>
+   </generatorConfiguration>
+   ```
+
+!> "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"报错红字，只需要添加外部声明就行了。IDEA红色提示里选Fetch external resource
+
+3. 执行成功后生成以下文件
+
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200423222436.png)
+
+4.工具文件存放
+
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200423231744.png)

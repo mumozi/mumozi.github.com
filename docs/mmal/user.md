@@ -1,5 +1,27 @@
 # 用户模块
 
+## 建表准备
+
+```sql
+DROP TABLE IF EXISTS `mmall_user`;
+CREATE TABLE `mmall_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户表id',
+  `username` varchar(50) NOT NULL COMMENT '用户名',
+  `password` varchar(50) NOT NULL COMMENT '用户密码，MD5加密',
+  `email` varchar(50) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `question` varchar(100) DEFAULT NULL COMMENT '找回密码问题',
+  `answer` varchar(100) DEFAULT NULL COMMENT '找回密码答案',
+  `role` int(4) NOT NULL COMMENT '角色0-管理员,1-普通用户',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '最后一次更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_name_unique` (`username`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+```
+
+
+
 ## 登陆
 
 ### 公共层准备common
@@ -223,7 +245,7 @@ public class UserServiceImpl implements IUserService {
 
 1. 根据需求手动添加查询方法(手动添加模块dao层)
 
-   com.mmal.dao.UserMapper
+   `com.mmal.dao.UserMapper`
 
 ```java
 package com.mmal.dao;
@@ -253,7 +275,7 @@ public interface UserMapper {
 
 2. 对应查询sql编写
 
-(src/main/resources/mappers/UserMapper.xml)
+(`src/main/resources/mappers/UserMapper.xml`)
 
 ```xml
  <!--手动添加sql模块    -->
@@ -583,8 +605,6 @@ public class MD5Util {
 
 ```java
 package com.mmal.common;
-
-
 
 
 import com.google.common.cache.CacheBuilder;
@@ -998,10 +1018,18 @@ String selectQuestionByUsername(String username);
 
 ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200317150458.png)
 
+### 接口文档
+
+[跳转](https://gitee.com/imooccode/happymmallwiki/wikis/门户_用户接口?sort_id=9917)
+
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200424101612.png)
+
 ### 浏览器
 
-![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200317150626.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200424101646.png)
 
-![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200317150649.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200424101850.png)
+
+
 
 !>test接口时候要保存每一条接口url，方便管理后续调试。
