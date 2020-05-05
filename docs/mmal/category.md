@@ -359,3 +359,16 @@ List<Category> selectCategoryChildrenByParentId(Integer parentId);
     }
 ```
 
+## 接口测试
+
+### 接口文档
+
+[跳转](https://gitee.com/imooccode/happymmallwiki/wikis/门户_用户接口?sort_id=9917)
+
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200426195957.png)
+
+### 浏览器
+
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200426200029.png)
+
+!>test接口时候要保存每一条接口url，方便管理后续调试。
