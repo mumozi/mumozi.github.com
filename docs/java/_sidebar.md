@@ -8,7 +8,7 @@
   - [接口、多态](java/interface.md)
   - [final、权限、内部类、引用类型](java/final.md)
   - [Object类、常用API](java/api.md)
-  - [Collection、泛型、集合](collection)
+  - [Collection、泛型、集合](java/collection)
   - [List、Set、数据结构、Collections](java/list.md)
   - [Map集合](java/map.md)
   - [异常、线程](java/exception.md)
