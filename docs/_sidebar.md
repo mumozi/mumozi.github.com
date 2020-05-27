@@ -21,5 +21,7 @@
 
    - [mysql8.0特性](note/mysql8.md)
 
+   - [JAVA遇到的那些笔试机试](note/test.md)
+   
      
 
