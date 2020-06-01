@@ -80,8 +80,6 @@ SpringBoot使用它来做日志功能；
 
 底层依赖关系
 
-![](/media/cloudlandboy/%E8%B5%84%E6%96%99/%E6%95%99%E7%A8%8B/SpringBoot/%E6%BA%90%E7%A0%81%E3%80%81%E8%B5%84%E6%96%99%E3%80%81%E8%AF%BE%E4%BB%B6/%E6%96%87%E6%A1%A3/Spring%20Boot%20%E7%AC%94%E8%AE%B0/images/%E6%90%9C%E7%8B%97%E6%88%AA%E5%9B%BE20180131220946.png)
-
 总结：
 
 1. SpringBoot底层也是使用slf4j+logback的方式进行日志记录

@@ -408,7 +408,7 @@ Spring Boot里面没有Spring的配置文件，我们自己编写的配置文件
 
 想让Spring的配置文件生效，加载进来；@**ImportResource**标注在一个配置类上
 
-![image-20200413210057553](properties.assets/image-20200413210057553.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200601.png)
 
 !> 注意！这个注解是放在主入口函数的类上，而不是测试类上
 

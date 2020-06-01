@@ -1,10 +1,4 @@
-# SpringMVC自动配置
-
-Spring Boot为Spring MVC提供了自动配置，可与大多数应用程序完美配合。
-
-以下是SpringBoot对SpringMVC的默认配置
-
-**`org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration`**
+pringframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration`**
 
 自动配置在Spring的默认值之上添加了以下功能：
 
@@ -28,11 +22,11 @@ Spring Boot为Spring MVC提供了自动配置，可与大多数应用程序完�
 - 自动配置了ViewResolver
 - ContentNegotiatingViewResolver：组合所有的视图解析器的；
 
-![1573873741438](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573873741438.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1573873741438.png)
 
 视图解析器从哪里来的？
 
-![1573874365778](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573874365778.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1573874365778.png)
 
 <mark>**所以我们可以自己给容器中添加一个视图解析器；自动的将其组合进来**</mark>
 
@@ -49,7 +43,7 @@ public class MyViewResolver implements ViewResolver {
 
 
 
-![1573875409759](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573875409759.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1573875409759.png)
 
 
 
@@ -117,13 +111,13 @@ public class MyMvcConfig implements WebMvcConfigurer {
 
 下面这个类是`WebMvcAutoConfiguration`中的一个内部类
 
-![1573891167026](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573891167026.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1573891167026.png)
 
 看一下`@Import({WebMvcAutoConfiguration.EnableWebMvcConfiguration.class})`中的这个类，
 
 这个类依旧是`WebMvcAutoConfiguration`中的一个内部类
 
-![1573891478014](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573891478014.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1573891478014.png)
 
 重点看一下这个类继承的父类`DelegatingWebMvcConfiguration`
 
@@ -176,7 +170,7 @@ public class DelegatingWebMvcConfiguration extends WebMvcConfigurationSupport {
 
 效果：SpringMVC的自动配置和我们的扩展配置都会起作用；
 
-![1573892805539](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573892805539.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1573892805539.png)
 
 ## 全面接管SpringMVC
 
@@ -190,7 +184,7 @@ SpringBoot对SpringMVC的自动配置不需要了，所有都是由我们自己�
 public class MyMvcConfig implements WebMvcConfigurer
 ```
 
-![1573892899452](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573892899452.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1573892899452.png)
 
 原理：
 

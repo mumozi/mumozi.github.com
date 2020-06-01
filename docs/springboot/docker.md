@@ -8,9 +8,7 @@ Docker支持将软件编译成一个镜像；然后在镜像中各种软件做�
 
 
 
-![](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/20180303145450.png)
-
-![](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/20180303145531.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20180303145531.png)
 
 ## 核心概念
 
@@ -24,7 +22,7 @@ Docker支持将软件编译成一个镜像；然后在镜像中各种软件做�
 
 `docker容器(Container)`：镜像启动后的实例称为一个容器；容器是独立运行的一个或一组应用
 
-![](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/20180303165113.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20180303165113.png)
 
 使用Docker的步骤：
 

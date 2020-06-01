@@ -390,3 +390,5 @@ public String sayHello(@CookieValue(value="JSESSIONID") String cookieValue) {
 2. 属性
 	1. value：指定存入属性的名称
 	2. type：用于指定存入的数据类型。
+
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/20200529160317.png)

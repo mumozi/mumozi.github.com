@@ -126,7 +126,7 @@ SpringBoot在创建连接池后还会运行预定义的SQL脚本文件，具体�
 List<Resource> scripts = this.getScripts("spring.datasource.schema", this.properties.getSchema(), "schema");
 ```
 
-![1574409852703](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574409852703.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1574409852703.png)
 
 可以看出，如果我们没有在配置文件中配置脚本的具体位置，就会在classpath下找`schema-all.sql`和`schema.sql`  <small>platform获取的是all，platform可以在配置文件中修改</small>
 
@@ -161,13 +161,13 @@ CREATE TABLE `department` (
 
 程序启动后发现表并没有被创建，DEBUG查看以下，发现在运行之前会有一个判断
 
-![1574411869052](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574411869052.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1574411869052.png)
 
-![1574412098885](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574412098885.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1574412098885.png)
 
 上面方法也不知道在干什么，反正就是只要是`NEVER`和`EMBEDDED`就为true，而DataSourceInitializationMode枚举类中除了这两个就剩下`ALWAYS`了，可以在配置文件中配置为ALWAYS
 
-![1574412237660](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574412237660.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1574412237660.png)
 
 ```yaml
 spring:

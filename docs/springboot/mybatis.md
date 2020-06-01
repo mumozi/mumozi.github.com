@@ -44,7 +44,7 @@
 
 依赖关系
 
-![1574423628318](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574423628318.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1574423628318.png)
 
 
 
@@ -304,9 +304,9 @@ public class MybatisConfig {
 
 
 
-![1574430056512](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574430056512.png)
+![7](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1574430056512.png)
 
-![1574430280791](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574430280791.png)
+
 
 ## Mapper扫描
 

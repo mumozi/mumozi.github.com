@@ -4,13 +4,11 @@
 
 **默认效果：**
 
-- 浏览器返回一个默认的错误页面，  注意看浏览器发送请求的`请求头`：
-
-  ![1573993746920](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573993746920.png)
+- ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1573993746920.png)
 
 - 其他客户端返回json数据，注意看`请求头`
 
-  ![1573996455049](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573996455049.png)
+  ![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1573996455049.png)
 
 
 
@@ -60,7 +58,7 @@
     }
 ```
 
-![1573994730632](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573994730632.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1573994730632.png)
 
 
 
@@ -96,7 +94,7 @@
 public class BasicErrorController extends AbstractErrorController
 ```
 
-![1573996271708](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1573996271708.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1573996271708.png)
 
 这两个方法一个用于浏览器请求响应html页面，一个用于其他客户端请求响应json数据
 
@@ -289,20 +287,20 @@ server.error.include-exception=true
 
 原因：
 
-![1574001983704](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574001983704.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1574001983704.png)
 
 在注册时
 
-![1574002101183](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574002101183.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1574002101183-1.png)
 
 - 没有模板引擎（模板引擎找不到这个错误页面），就会在静态资源文件夹下找；
 - 如果以上都没有找到错误页面，就是默认来到SpringBoot默认的错误提示页面；
 
 ## defaultErrorView
 
-![1574146899180](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574146899180.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1574146899180.png)
 
-![1574146843810](https://cdn.static.note.zzrfdsn.cn/images/springboot/assets/1574146843810.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/1574146843810.png)
 
 
 
