@@ -1,4 +1,4 @@
-- 商城（未完结）
+- 商城（未完结，暂停）
     - [环境安装配置](mmal/centos.md)
     - [项目启动](mmal/idea.md)
     - [用户模块](mmal/user.md)

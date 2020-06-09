@@ -9,7 +9,7 @@ SSM基础
   - [基本概念、入口、请求参数的绑定、常用注解](ssm/mvc_start.md)
   - [响应数据和结果视图、文件上传、异常处理](ssm/mvc_response.md)
 
-### [未更新](https://www.bilibili.com/video/BV1mE411X7yp)
+### [未更新暂停](https://www.bilibili.com/video/BV1mE411X7yp)
 
 搭建整合环境
 spring框架代码的编写
