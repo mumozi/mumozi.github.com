@@ -42,14 +42,16 @@ class Login extends BaseController
 `composer require topthink/think-view`，TP6选择。
 
 使用模板报驱动错误Driver [Think] not supported.
+
  原因：
  tp6默认只能支持PHP原生模板，但配置文件`config/view.php`配置使用的却是Think
- 办法一：使用tp模板进行think-view安装
- composer require topthink/think-view
- 办法二：使用原生模板
- 到配置文件config/view.php里把'type'          => 'Think'修改为'type'          => 'php'
- 办法三：使用原生模板
- `return View::engine('php')->fetch();`
+
+-  办法一：使用tp模板进行think-view安装
+   `composer require topthink/think-view`
+-  办法二：使用原生模板
+   到配置文件config/view.php里把'type'          => 'Think'修改为'type'          => 'php'
+-  办法三：使用原生模板
+   `return View::engine('php')->fetch();`
 
 ## 3.设计后台用户表
 
