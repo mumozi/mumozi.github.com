@@ -12,4 +12,4 @@
 
 ## 开发流程
 
-![image-20200609110104120](background.assets/image-20200609110104120.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/image-20200609110104120.png)
