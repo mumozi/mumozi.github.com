@@ -6,6 +6,7 @@
 - 核心框架：[TP6稳定版ThinkPHP V6.0.2](https://www.kancloud.cn/manual/thinkphp6_0)
 - 服务器：Nginx1.15.11
 - [在线作图](https://processon.com/)
+- [git仓库](https://github.com/mumozi/tp6_mall)
 
 ## 安装TP6稳定版
 
