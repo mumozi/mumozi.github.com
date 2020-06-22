@@ -958,7 +958,7 @@ class AuthBase extends ApiBase
 
 - 测试
 
-![image-20200616133015585](login.assets/image-20200616133015585.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/image-20200616133015585.png)
 
 ## 资源路由&restful用户信息
 
@@ -1030,7 +1030,7 @@ class User extends AuthBase
 
 - 测试
 
-![image-20200616135152386](login.assets/image-20200616135152386.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/image-20200616135152386.png)
 
 ### 更新用户信息
 
@@ -1065,6 +1065,7 @@ class User extends AuthBase
   ```
 
   </details>
+  ```
 ```
   
 - 场景验证抛出异常
@@ -1075,7 +1076,7 @@ class User extends AuthBase
   - 检查用户名是否存在（通过用户名获取`$userResult = $this->getNormalUserByUsername($data['username']);`
   - 更新`$this->userObj->updateById($id, $data);`
 
-```php
+​```php
 <?php
 
 
@@ -1185,15 +1186,15 @@ git push origin master
 - 修改配置地址如图
 - 启动项目`npm run serve`
 
-![image-20200616153224748](login.assets/image-20200616153224748.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/image-20200616153224748.png)
 
-![image-20200616153500471](login.assets/image-20200616153500471.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/image-20200616153500471.png)
 
 ![image-20200616153514360](login.assets/image-20200616153514360.png)
 
 - 测试
 
-![image-20200616160929272](login.assets/image-20200616160929272.png)
+![](https://cdn.jsdelivr.net/gh/mumozi/Figure_bed/img/image-20200616160929272.png)
 
 **bug修复**，`method not exists:app\api\controller\Login->controller()`
 
