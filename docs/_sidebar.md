@@ -28,5 +28,7 @@
 
    - [JAVA遇到的那些笔试机试](note/test.md)
    
+   - [sql题目](note/sql.md)
+   
      
 

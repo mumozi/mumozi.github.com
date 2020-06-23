@@ -170,4 +170,99 @@ public function getNormalCategorys(){
     }
 ```
 
-# 课程8.6
+## 分页查询
+
+- 获取分节点
+- 注意状态（删除不要，开启关闭都要）
+- 分页单独使用paginate
+
+```php
+    public function index() {
+        $pid = input("param.pid", "", "intval");
+        $data = [
+            "pid" => $pid,
+        ];
+        $category = new CategoryBus();
+        try {
+            $categorys = $category->getLists($data, 5);
+        }catch (\Exception $e){
+            $categorys = [];
+        }
+        return View::fetch("",[
+            "categorys" => $categorys,
+        ]);
+    }
+```
+
+```php
+public function getLists($where, $num = 10){
+        $order = [
+            "listorder" => "desc",
+            "id" => "desc"
+        ];
+        return $this->where("status", "<>", config("status.mysql.table_delete"))
+            ->where($where)
+            ->order($order)
+            ->paginate($num);
+    }
+```
+
+```html
+ {volist name="categorys['data']" id="vo"}
+
+{if $vo.status == 1}checked{else /}{/if}
+
+...
+{/volist}
+
+```
+
+```php
+//补充插件（默认
+public function getLists($data, $num){
+        $list = $this->categoryObj->getLists($data, $num);
+        if (!$list) {
+            $list = [];
+        }
+        $res = $list->toArray();
+       // $res['render'] = $list->render();//获取的默认分页插件
+        return $res;
+    }
+```
+
+### 结果集整合(打印categorys)
+
+```php
+ array:6 [▼
+  "total" => 6
+  "per_page" => 5
+  "current_page" => 1
+  "last_page" => 2
+  "data" => array:5 [▼
+    0 => array:10 [▶]
+    1 => array:10 [▶]
+    2 => array:10 [▶]
+    3 => array:10 [▶]
+    4 => array:10 [▶]
+  ]
+  "render" => "<ul class="pagination"><li class="disabled"><span>&laquo;</span></li> <li class="active"><span>1</span></li><li><a href="/admin/category?page=2">2</a></li> <li> ▶"
+]
+```
+
+```js
+laypage.render({ //分页
+            elem: 'pages'
+            , count: {$categorys.total}
+            , theme: '#FFB800'
+            , limit: {$categorys.per_page}
+            , curr: {$categorys.current_page}
+            , jump:function (obj, first) {
+                if(!first){
+                    location.href="?page="+obj.curr
+                }
+            }
+
+        });
+```
+
+# 8-9
