@@ -265,4 +265,180 @@ laypage.render({ //分页
         });
 ```
 
-# 8-9
+## 排序
+
+- 控制器
+
+```php
+/**排序
+     * @return \think\response\Json
+     */
+    public function listorder() {
+        $id = input("param.id", 0, "intval");
+        $listorder = input("param.listorder", 0, "intval");
+        //todo 验证机制
+        if (!$id) {
+            return show(config('status.error'), "参数错误");
+        }
+
+        try {
+            $res = (new CategoryBus())->listorder($id, $listorder);
+        } catch (\Exception $e) {
+            return show(config('status.error'), $e->getMessage());
+        }
+
+        if ($res) {
+            return show(config('status.success'), "排序成功");
+        }else{
+            return show(config('status.error'), "排序失败");
+        }
+    }
+```
+
+- 业务
+
+```php
+public function listorder($id, $listorder){
+        //查询id是否存在，不存在返回null
+        $category = CategoryMode::find($id);
+        if(!$category){
+            throw new \think\Exception("不存在该条记录");
+        }
+        $category->listorder = $listorder;
+//        $category->update_time = time();自动开启了
+
+        try {
+           $res = $category->save();
+        }catch (\Exception $e) {
+            //todo 日志
+            return false;
+        }
+        return $res;
+    }
+```
+
+> 更新的[最佳实践原则](https://www.kancloud.cn/manual/thinkphp6_0/1037583)是：如果需要使用模型事件，那么就先查询后更新，如果不需要使用事件或者不查询直接更新，直接使用静态的`Update`方法进行条件更新，如非必要，尽量不要使用批量更新。
+
+## 状态
+
+- 控制器
+
+```php
+public function status()  {
+        $status = input("param.status", 0, "intval");
+        $id = input("param.id", 0, "intval");
+        //todo 验证
+        if(!$id || !in_array($status, Status::getTableStatus())){
+            return show(config('status.error'), "参数错误");
+        }
+
+        try {
+            $res = (new CategoryBus())->status($id, $status);
+        } catch (\Exception $e) {
+            return show(config('status.error'), $e->getMessage());
+        }
+
+        if ($res) {
+            return show(config('status.success'), "状态更新成功");
+        }else{
+            return show(config('status.error'), "状态更新失败");
+        }
+    }
+```
+
+- 公共状态数组（抽出）` app\common\lib`
+
+```php
+<?php
+
+
+namespace app\common\lib;
+
+
+class Status
+{
+public static function getTableStatus(){
+    $mysqlStatus = config("status.mysql");
+    return array_values($mysqlStatus);
+}
+}
+
+```
+
+- 业务
+
+```php
+  public function status($id, $status){
+        //查询id是否存在，不存在返回null
+        $category = CategoryMode::find($id);
+        if(!$category){
+            throw new \think\Exception("不存在该条记录");
+        }
+        $category->status = $status;
+//        $category->update_time = time();自动开启了
+
+        try {
+            $res = $category->save();
+        }catch (\Exception $e) {
+            //todo 日志
+            return false;
+        }
+        return $res;
+    }
+```
+
+> 注意处理状态码的范围，数组判断并封装成公共方法。
+
+## 子分类数目
+
+- 模型
+
+```php
+ /**获取子节点数目
+     * @param $condition
+     * @return mixed
+     */
+    public function getChildCountInPids($condition){
+        $where[] = ["pid", "in", $condition['pid']];
+        $where[] = ["status", "<>", config("status.mysql.table_delete")];
+        $res = $this->where($where)
+            ->field(["pid", "count(*) as count"])
+            ->group("pid")
+            ->select();
+        return $res;
+    }
+```
+
+- 业务更新
+
+```php
+    public function getLists($data, $num){
+        $list = $this->categoryObj->getLists($data, $num);
+        if (!$list) {
+            $list = [];
+        }
+        $res = $list->toArray();
+        $res['render'] = $list->render();//获取的默认分页插件
+//        思路。获取列表id  -》获取count-》 填充到列表
+
+        $pids = array_column($res['data'], "id");
+        if ($pids) {
+            $idCountResult = $this->categoryObj->getChildCountInPids(['pid' => $pids]);
+            $idCountResult = $idCountResult->toArray();
+
+            $idCounts = [];
+
+            foreach ($idCountResult as $countResult){
+                $idCounts[$countResult['pid']] = $countResult['count'];
+            }
+        }
+
+        if ($res['data']){
+            foreach ($res['data'] as $k =>$value){
+                $res['data'][$k]['childCount'] = $idCounts[$value['id']]??0;
+            }
+        }
+        return $res;
+    }
+```
+
