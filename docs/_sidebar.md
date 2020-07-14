@@ -16,11 +16,11 @@
   
 -  **项目**
   
-  - [尚硅谷-众筹网](/_sidebar.md)
+  - [尚硅谷-众筹网(未完结，暂停)](crowdfunding/_sidebar.md)
   
-  - [mall商城](mmal/_sidebar.md)
+  - [mall商城(未完结，暂停)](mmal/_sidebar.md)
   
-  - [TP6.0高并发电商服务系统](tp6/_sidebar.md)
+  - [TP6.0高并发电商服务系统(更新中)](tp6/_sidebar.md)
   
 - **随笔**
 

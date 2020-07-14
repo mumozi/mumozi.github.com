@@ -5,3 +5,4 @@
 - [常见知识点网络](php/note_n.md)
 - [笔试一](php/test01.md)
 - [笔试二](php/test02.md)
+- [笔试三](php/test03.md)
