@@ -7,3 +7,5 @@
 - [笔试二](php/test02.md)
 - [笔试三](php/test03.md)
 - [笔试四](php/test04.md)
+- [笔试五](php/test05.md)
+- [笔试六](php/test06.md)
