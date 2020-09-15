@@ -17,10 +17,9 @@
 -  **项目**
   
   - [尚硅谷-众筹网(未完结，暂停)](crowdfunding/_sidebar.md)
-  
   - [mall商城(未完结，暂停)](mmal/_sidebar.md)
-  
   - [TP6.0高并发电商服务系统(更新中)](tp6/_sidebar.md)
+  - [Lin-CMS-TP51&VUE的项目(更新中)](tp51/_sidebar.md)
   
 - **随笔**
 
@@ -33,4 +32,9 @@
    - [php7新特性](note/php7.md)
    
      
+     
+     
 
+- **常用工具**
+
+   - [git常用](tools/git.md)
