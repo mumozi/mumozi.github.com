@@ -12,5 +12,11 @@
 
 ## 代码实践-零食商铺小程序
 
--  [lin-cms-tp5商城的后端实践](https://github.com/mumozi/lin-cms-tp5-shop)
--  [lin-cms-tp5商城的前端实践](https://github.com/mumozi/lin-cms-vue-shop) 
+- [lin-cms-tp5商城的后端实践](https://github.com/mumozi/lin-cms-tp5-shop)
+
+- [lin-cms-tp5商城的前端实践](https://github.com/mumozi/lin-cms-vue-shop) 
+
+  **<font color="red">目前更新同步完成第十八章 </font>**
+
+  **<font color="orange">微信后端未同步（十-十三） </font>**
+
