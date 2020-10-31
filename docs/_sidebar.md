@@ -38,3 +38,4 @@
 - **常用工具**
 
    - [git常用](tools/git.md)
+   - [vue与TP部署同一台服务器](tools/linux.md)
