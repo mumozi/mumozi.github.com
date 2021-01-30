@@ -12,6 +12,8 @@
   
   - [PHP_面试](php/_sidebar.md)
   
+  - [Laravel核心](laravel/_sidebar.md)
+  
     
   
 -  **项目**
