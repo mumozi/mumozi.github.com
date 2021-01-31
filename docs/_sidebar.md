@@ -1,20 +1,16 @@
 - **后端**
   
   - [Spring Boot](springboot/_sidebar.md)
-  
   - [JAVA基础](java/_sidebar.md)
-  
   - [JAVA_WEB](javaweb/_sidebar.md)
-  
   - [JAVA_面试](javaknowledge/_sidebar.md)
-  
   - [SSM基础](ssm/_sidebar.md)
-  
   - [PHP_面试](php/_sidebar.md)
-  
   - [Laravel核心（更新中）](laravel/_sidebar.md)
-  
-    
+- **前端**
+  - [node](/frontend/node/md/_sidebar.md)
+  - [ECMAScript](frontend/ecmascript/_sidebar.md)
+  - [VUE入门](frontend/vue/_sidebar.md)
   
 -  **项目**
   
@@ -41,3 +37,5 @@
 
    - [git常用](tools/git.md)
    - [vue与TP部署同一台服务器](tools/linux.md)
+   - [IDEA](others/idea/_sidebar.md)
+   - [markdown](others/markdown/_sidebar.md)
