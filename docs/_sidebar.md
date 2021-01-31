@@ -12,7 +12,7 @@
   
   - [PHP_面试](php/_sidebar.md)
   
-  - [Laravel核心](laravel/_sidebar.md)
+  - [Laravel核心（更新中）](laravel/_sidebar.md)
   
     
   
@@ -20,8 +20,8 @@
   
   - [尚硅谷-众筹网(未完结，暂停)](crowdfunding/_sidebar.md)
   - [mall商城(未完结，暂停)](mmal/_sidebar.md)
-  - [TP6.0高并发电商服务系统(更新中)](tp6/_sidebar.md)
-  - [Lin-CMS-TP51&VUE的项目(更新中)](tp51/_sidebar.md)
+  - [TP6.0高并发电商服务系统(未完结，暂停)](tp6/_sidebar.md)
+  - [Lin-CMS-TP51&VUE的项目(未完结，暂停)](tp51/_sidebar.md)
   
 - **随笔**
 
