@@ -39,3 +39,8 @@
    - [vue与TP部署同一台服务器](tools/linux.md)
    - [IDEA](others/idea/_sidebar.md)
    - [markdown](others/markdown/_sidebar.md)
+
+- 工作方案
+  - [工作笔记](work/_sidebar.md)
+  
+    
