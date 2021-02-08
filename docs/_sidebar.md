@@ -40,7 +40,7 @@
    - [IDEA](others/idea/_sidebar.md)
    - [markdown](others/markdown/_sidebar.md)
 
-- 工作方案
+- **工作方案**
   - [工作笔记](work/_sidebar.md)
   
     
