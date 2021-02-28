@@ -33,5 +33,44 @@
   ->header('Content-Type', 'text/plain');
   ```
 
-  
+###   路由重定向
 
+1. 重定向使用助手函数redirect()的to()方法，注意需要return 才能跳转；
+  ```php 
+  return redirect()->to('/'); //跳到首页
+  return redirect()->to('task'); //跳转到task
+  return redirect()->to('task/url'); //跳转到task/url 
+  ```
+2. 也可以直接使用快捷方式直接进行跳转；
+   
+  ```php
+	return redirect('/'); //跳到首页
+      return redirect('task'); //跳转到task
+      return redirect('task/url'); //跳转到task/url
+  ```
+
+
+3. redirect()助手有一个对应的facade 模式对象；
+   ```php 
+     return Redirect::to('/'); //facade 模式，但需要use 引入
+	```
+4. 使用redirect()的route()方法，可以跳转到指定的命名路由URI；
+	```php 
+    return redirect()->route('task.index'); //注意和route()方法区别
+   ```
+
+5. 使用redirect()的back()方法，可以重定向到上一个页面中；
+```php 
+return redirect()->back();
+return back(); //快捷方式
+```
+6. 使用redirect()的action()方法，可以直接重定向到控制器方法；
+	```php 
+return redirect()->action('TaskController@index'); //需注册路由
+return redirect()->action('TaskController@index', ['id'=>10]);
+	```
+7. 使用redirect()的away()方法，跳转到外部链接；
+	```php 
+return redirect()->away('http://www.baidu.com'); //不带任何编码
+	```
+	

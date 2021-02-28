@@ -1,4 +1,4 @@
-# VUE入门
+# [VUE入门](https://note.clboy.cn/#/frontend/vue/start)
 
 先聊一下前端开发模式的发展。
 
