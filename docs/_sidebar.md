@@ -7,6 +7,7 @@
   - [SSM基础](ssm/_sidebar.md)
   - [PHP_面试](php/_sidebar.md)
   - [Laravel核心（更新中）](laravel/_sidebar.md)
+  - [Laravel之Dcat-admin官方文档）](dcat-admin/2.x/_sidebar.md)
 - **前端**
   - [node](/frontend/node/md/_sidebar.md)
   - [ECMAScript](frontend/ecmascript/_sidebar.md)
@@ -42,5 +43,5 @@
 
 - **工作方案**
    - [工作笔记](work/_sidebar.md)
-  
     
+   
