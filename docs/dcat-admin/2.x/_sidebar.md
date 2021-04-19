@@ -14,10 +14,6 @@
 
 - [assets](dcat-admin/2.x/assets.md)
 
-- [beta-change-log](dcat-admin/2.x/beta-change-log.md)
-
-- [change-log](dcat-admin/2.x/change-log.md)
-
 - [custom-authentication](dcat-admin/2.x/custom-authentication.md)
 
 - [custom-chart](dcat-admin/2.x/custom-chart.md)
@@ -157,8 +153,6 @@
 - [qa](dcat-admin/2.x/qa.md)
 
 - [quick-start](dcat-admin/2.x/quick-start.md)
-
-- [README](dcat-admin/2.x/README.md)
 
 - [response](dcat-admin/2.x/response.md)
 
