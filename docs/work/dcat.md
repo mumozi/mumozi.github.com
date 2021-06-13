@@ -10,22 +10,22 @@ $grid->actions(function (Grid\Displayers\Actions $actions) {
 //情况二
 $grid->actions(function (Grid\Displayers\Actions $actions) {
                 if($actions->row->d_status == 0){
-                    $actions->append(new LiquidationEnable('&lt;i class="feather icon-pause-circle">&lt;/i> 隐藏', 0));
+                    $actions->append(new LiquidationEnable('<i class="feather icon-pause-circle"></i> 隐藏', 0));
                 }else{
-                    $actions->append(new LiquidationEnable('&lt;i class="feather icon-play-circle">&lt;/i> 显示', 1));
+                    $actions->append(new LiquidationEnable('<i class="feather icon-play-circle"></i> 显示', 1));
                 }
 
             });
 //情况三
 $grid->actions(function (Grid\Displayers\Actions $actions) {
                 $url = 'liquidation_sett/'. $actions->row->bn.'?order_time='. $actions->row->date_time;
-                $actions->append('&lt;a href="' . admin_url($url) .'" class="shop-relation-edit-btn">&lt;span class="d-none d-sm-inline">&lt;i class="feather icon-eye">&lt;/i>  查看&lt;/span>&lt;/a>');
+                $actions->append('<a href="' . admin_url($url) .'" class="shop-relation-edit-btn"><span class="d-none d-sm-inline"><i class="feather icon-eye"></i>  查看</span></a>');
             });
 ```
 
 ## 命令功能
 
-```php
+```shell
 # 目录更新生成
 php artisan admin:export-seed
 # 目录导入
@@ -45,7 +45,7 @@ $filter->whereBetween('add_time', function ($q) {
                     }
 
                     if ($end !== null) {
-                        $q->where('add_time', '&lt;=', strtotime($end));
+                        $q->where('add_time', '<=', strtotime($end));
                     }
                 })->datetime(['format' => 'YYYY-MM-DD']);
 //关联多张表查询
