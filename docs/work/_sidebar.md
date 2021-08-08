@@ -6,3 +6,6 @@
 - [SQL语句](work/sql.md)
 - [TP及H+模板](work/tp_H+.md)
 - [Dcat-Admin常用](work/dcat.md)
+- [laravel常用](work/laravel.md)
+- [PHP常用](work/php.md)
+- [ECSTORE商派](work/ecos.md)
