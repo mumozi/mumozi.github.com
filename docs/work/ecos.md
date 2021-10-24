@@ -6,6 +6,8 @@
 
 ## 2.流程
 
+`app\base   cmd update    php5`
+
 ### 		1.描述文件
 
 #### app.xml
@@ -786,7 +788,50 @@ function http_api_post($url, $data = null) {
   </script>
   ```
 
+### 3.权限控制开发
 
+- 审核权限
+
+  `class cargoflow_ctl_admin_quick_instock extends desktop_controller`继承桌面控制器直接使用
+
+  ```php
+  //增加审核权限按钮显示
+              if($this->has_permission('cargoflow_quick_instock_agree')){
+                  $this->pagedata['agree'] = 0;
+              }else{
+                  $this->pagedata['agree'] = 1;
+              }
+  ```
+
+  原生使用
+
+  ```php
+  $user = kernel::single('desktop_user');
+          if($row['status'] == 2 && $user->has_permission('cargoflow_quick_instock_agree')){
+              $name = '审核';
+          }else{
+              $name = '详情';
+          }
+  ```
+
+- 角色权限
+
+  父级角色——子集角色
+
+  ```xml
+    <permission id="cargoflow_purchase_order" display='true'>采购单管理</permission>
+    <permission id="cargoflow_purchase_order_agree" display='true' parent='cargoflow_purchase_order'>采购订货审核</permission>
+  
+  ....
+  
+  <menugroup name="采购管理">
+      <menu app='cargoflow' controller='admin_purchase_order' action='index' permission='cargoflow_purchase_order' display='true' order='420' >采购订货</menu>
+       <menu app='cargoflow' controller='admin_purchase_order' action='agree' permission='cargoflow_purchase_order_agree' display='false' order='530' >采购订货审核</menu>
+      <menu app='cargoflow' controller='admin_purchase_return' action='index' permission='cargoflow_purchase_order' display='true' order='420' >采购退货</menu>
+  </menugroup>
+  ```
+
+  
 
 
 
@@ -900,6 +945,214 @@ class cargoflow_finder_purchase_order{
     }
 ```
 
+#### 		c.新增
+
+`app/cargoflow/lib/finder/transfer/order.php`
+
+```php
+function index(){
+//新增按钮
+        $custom_actions[] = array(
+            'label'=>app::get('cargoflow')->_('新增调拨单'),
+            'icon'=>'add.gif',
+            'href'=>'index.php?app=cargoflow&ctl=admin_transfer_order&act=add',
+            'target'=>'dialog::{title:\''.app::get('cargoflow')->_('新增调拨单').'\'}'
+        );
+        $actions_base['title'] = app::get('cargoflow')->_('调拨单列表');
+        $actions_base['actions'] = $custom_actions;
+        $actions_base['orderBy'] = 'create_time DESC';
+        $actions_base['use_buildin_recycle'] = false;
+        $actions_base['use_buildin_filter'] = true;
+        $actions_base['orderBy'] = 'create_time DESC';
+        $this->finder('cargoflow_mdl_transfer_order',$actions_base);
+    }
+//新增页面
+function add($id=null){
+        $this->pagedata['obj_filter'] = urlencode('delivery=0&disabled=false');
+        $this->pagedata['bn'] = 'DB' . date('YmdHis');
+        $this->pagedata['create_time'] = date('Y-m-d H:i');
+        $this->display('admin/transfer/order/add.html');
+    }
+//保存
+function save(){
+        $this->begin();
+        $objOrder = $this->app->model('transfer_order');
+        $objOrderItem = $this->app->model('transfer_order_item');
+        $msg = app::get('cargoflow')->_('保存失败');
+        $order = array();
+        if($objOrder->validate($_POST, $order, $msg)){
+            $items = $order['items'];
+            unset($order['items']);
+            if($objOrder->save($order)){
+                $transfer_order_id = $objOrder->db->lastinsertid();
+                foreach ($items as $item) {
+                    $item['transfer_order_id'] = $transfer_order_id;
+                    if (!$objOrderItem->save($item)) {
+                        $this->end(false,app::get('cargoflow')->_('保存失败'));
+                    }
+                }
+
+                // 出库单主表
+                $objOutstockOrder = $this->app->model('outstock_order');
+                $outstock_data = array(
+                    'rel_id' => $transfer_order_id,
+                    'store_id' => $order['from_store_id'],
+                    'type' => '1',
+                    'nums' => $order['nums']
+                );
+
+                // 出库单明细
+                foreach ($items as $item) {
+
+                    $outstock_item_data = array(
+                        'goods_id' => $item['goods_id'],
+                        'product_id' => $item['product_id'],
+                        'bn' => $item['bn'],
+                        'barcode' => $item['barcode'],
+                        'name' => $item['name'],
+                        'spec_info' => $item['spec_info'],
+                        'unit' => $item['unit'],
+                        'nums' => $item['nums'],
+                        'sale_price' => $item['transfer_price'],
+                    );
+                    $outstock_data['products'][] = $outstock_item_data;
+                }
+
+                $outstock_save = $objOutstockOrder->add($outstock_data);
+
+                if (!$outstock_save) {
+                    $this->end(false,app::get('cargoflow')->_('保存失败'));
+                }
+
+                $this->end(true,app::get('cargoflow')->_('保存成功'));
+            }else{
+                $this->end(false,app::get('cargoflow')->_('保存失败'));
+            }
+        }else{
+            $this->end(false,$msg);
+        }
+    }
+```
+
+- 视图
+
+<details>
+
+
+```html
+<form method="POST" id='add_link' action="index.php?app=cargoflow&ctl=admin_transfer_order&act=save" class="tableform">
+    <div class="division">
+        <table width="100%">
+            <tr>
+                <th><{t}>单据编号：<{/t}></th>
+                <td>
+                    <{$bn}>
+                </td>
+                <th><{t}>制单日期：<{/t}></th>
+                <td style="width: 260px">
+                    <{$create_time}>
+                </td>
+            </tr>
+            <tr>
+                <th><{t}>发货门店：<{/t}></th>
+                <td>
+                    <{input type="object" object="stores@promotion" callback=update_price name="from_store_id" cols="name" multiple="false" select="radio" }>
+                </td>
+                <th><{t}>入库门店：<{/t}></th>
+                <td>
+                    <{input type="object" object="stores@promotion" callback=update_price name="store_id" cols="name" multiple="false" select="radio" }>
+                </td>
+            </tr>
+            <tr>
+                <th><{t}>备注：<{/t}></th>
+                <td colspan="3">
+                    <{input type="text" name="remark" value=""}>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="division">
+        <h4>商品选择：</h4>
+        <{input type="object" object="products@b2c" multiple="true" textcol="name" callback=update_price obj_filter=$obj_filter name="product_ids" view="cargoflow:admin/transfer/order/product.html"}>
+    </div>
+    <div class="table-action">
+        <{button type='button' label=$___a='取消'|t:'site' id="cancel-form-submit" }>
+        <{button type='button' label=$___a='提交'|t:'site' id="agree-form-submit" }>
+    </div>
+</form>
+
+<script>
+
+    function update_price() {
+        var from_store_id = $('add_link').getElement('input[name=from_store_id]').get('value');
+        var to_store_id = $('add_link').getElement('input[name=store_id]').get('value');
+        var products = $('add_link').getElements('.product-item');
+        if (from_store_id && to_store_id) {
+            products.forEach(function(product){
+                var product_id = product.get('data-pro-id');
+                new Request.JSON({
+                    url:'index.php?app=cargoflow&ctl=admin_transfer_order&act=query',
+                    method:'post',
+                    data:'from_store_id='+from_store_id+'&to_store_id='+to_store_id+'&product_id='+product_id,
+                    onComplete:function(res){
+                        if (res.success != undefined) {
+                            product.getElement('.from_store').set('text',res.from_stock)
+                            product.getElement('.to_store').set('text',res.to_stock)
+                        } else {
+                            MessageBox.error(res.error);
+                        }
+                    }
+                }).send();
+            })
+        }
+    }
+
+    (function(){
+        var _form = $('add_link');
+        var cancel_btn =$('cancel-form-submit');
+        var agree_btn =$('agree-form-submit');
+        var finder = finderGroup['<{$env.get._finder.finder_id}>'];
+
+        _form.store('target',{
+            onSuccess:function(response){
+                var hash_res_obj = JSON.decode(response);
+
+                if (hash_res_obj.success != undefined && hash_res_obj.success != "")
+                {
+                    try{
+                        var _dialogIns = agree_btn.getParent('.dialog').retrieve('instance');
+                    }catch(e){}
+
+                    if(_dialogIns)
+                    {
+                        _dialogIns.close();
+                        window.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+                    }
+                }
+            }
+        });
+
+        agree_btn.addEvent('click',function(){
+            _form.fireEvent('submit',{stop:$empty});
+        });
+
+        cancel_btn.addEvent('click',function(){
+            try{
+                var _dialogIns = cancel_btn.getParent('.dialog').retrieve('instance');
+            }catch(e){}
+
+            if(_dialogIns)
+            {
+                _dialogIns.close();
+            }
+        });
+
+    })();
+</script>
+```
+
+</details>
+
 
 
 ### 2.登录用户信息
@@ -932,5 +1185,122 @@ class cargoflow_ctl_admin_purchase_order extends desktop_controller
     }
     
     .......
+```
+
+### 3.视图打印
+
+```html
+<{foreach from=$item item=value key=key}>
+<{$key}> : <{$value}><br>
+<{/foreach}>
+```
+
+
+
+
+
+## 5.控制器数据操作
+
+```php
+//id查找
+
+$order_obj = $this->app->model('purchase_order');
+$obj = $order_obj->dump($id);
+
+//获取数据表
+$goods = $this->app->model('goods');
+dd($goods->_columns());
+//获取列表（model类定义）
+$importItems = app::get('cargoflow')->model('import_items')->getList('*',array('import_id'=>$importId));
+```
+
+## 6.打印
+
+```php
+/**
+     * 导出明细
+     */
+    function exportDetail(){
+        ini_set("memory_limit","80M");
+        @include_once(app::get('b2c')->app_dir . "/lib/phpexcel/PHPExcel/IOFactory.php");
+        $goods_model = app::get('cargoflow')->model('damage_item');
+        if(isset($_POST['isSelectedAll']) && $_POST['isSelectedAll'] == '_ALL_'){
+            $goodsData = $goods_model->getList('*',array());
+        }else{
+            $goodsData = $goods_model->db->select('select a.* from sdb_cargoflow_damage_item a left join sdb_cargoflow_damage b on a.damage_id=b.id where a.id in ('.implode(',',$_POST['id']).')');
+        }
+        $header_arr = array('A'=>'brand_name','B'=>'name','C'=>'unit','D'=>'price','E'=>'nums','F'=>'total','G'=>'create_time');
+        //初始化PHPExcel()
+        $objPHPExcel = new PHPExcel();
+        $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+        $filename = 'outstock.xlsx';
+        //接下来就是写数据到表格里面去
+        $objActSheet = $objPHPExcel->getActiveSheet()->mergeCells('A1:G1');
+        #$objActSheet = $objPHPExcel->getActiveSheet()->mergeCells('A2:G2');
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(18);
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objActSheet->setCellValue('A1','出库单');
+        #$objActSheet->setCellValue('A2','日期：'.date("Y").'年'.date("m").'月'.date("d").'日');
+        $title = array('A'=>'品牌','B'=>'商品名称','C'=>'单位','D'=>'单价','E'=>'数量','F'=>'总计金额','G'=>'日期');
+        foreach ($title as $ke=>$val){
+            $objActSheet->setCellValue($ke.'2',$val);
+        }
+        $startRow = 3;
+        $numTotal = 0;
+        $amtTotal = 0;
+        foreach ($goodsData as $k=>$row) {
+            $row['total'] = $row['nums']*$row['price'];
+            $numTotal += $row['nums'];
+            $amtTotal += $row['total'];
+            $brand = app::get('cargoflow')->model('quick_instock')->db->selectrow('select b.brand_name from sdb_b2c_products a left join sdb_b2c_brand b on a.brand_id=b.brand_id where a.product_id='.$row['product_id']);
+            $row['brand_name'] = $brand['brand_name'];
+            $damage =  app::get('cargoflow')->model('damage')->getRow('create_time',array('id'=>$row['damage_id']));
+            $row['create_time'] = date('Y-m-d',$damage['create_time']);
+            foreach ($header_arr as $key => $value){
+                $objActSheet->setCellValue($key.$startRow,$row[$value]);
+            }
+            $startRow++;
+        }
+        $objPHPExcel->getActiveSheet()->mergeCells('A'.$startRow.':D'.$startRow);
+        $objActSheet->setCellValue('A'.$startRow,'合计');
+        $objActSheet->setCellValue('E'.$startRow,$numTotal);//数量合计
+        $objActSheet->setCellValue('F'.$startRow,$amtTotal);//总计金额合计
+        $startRow += 1;
+        $objPHPExcel->getActiveSheet()->mergeCells('A'.$startRow.':G'.$startRow);
+        $objActSheet->setCellValue('A'.$startRow,'保管人：                                领用人：');
+        // 下载这个表格，在浏览器输出
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+        header("Content-Type:application/force-download");
+        header("Content-Type:application/vnd.ms-execl");
+        header("Content-Type:application/octet-stream");
+        header("Content-Type:application/download");;
+        header('Content-Disposition:attachment;filename='.$filename.'');
+        header("Content-Transfer-Encoding:binary");
+        $objWriter->save('php://output');
+        exit;
+    }
+```
+
+```php
+    /**
+     * 导出明细
+     */
+    function exportDetail(){
+        $orderItemObj = $this->app->model('purchase_order_item');
+        $data = $orderItemObj->getList('barcode,name,unit,nums,purchase_price,tax_rate', array('purchase_order_id' => $_GET['id']));
+        $header_arr = array('商品条码', '商品名称','单位', '采购数量' ,'含税进价' , '进价税率' ,  '不含税进价', '含税小计' ,'不含税小计');
+        foreach ($data as $k => $v) {
+            $data[$k]['tax_rate'] = empty($v['tax_rate']) ? 0 : $v['tax_rate']."%";
+            $data[$k]['barcode'] = "\t".$v['barcode'];
+            $data[$k]['purchase_price'] = "\t".sprintf("%.4f", round($v['purchase_price'], 4));
+            $data[$k]['purchase_price_tax'] = "\t".sprintf("%.4f", round($v['purchase_price'] / (1 + $v['tax_rate'] / 100), 4));
+            $data[$k]['total'] = "\t".sprintf("%.2f",round($v['nums'] * $v['purchase_price'], 2));
+            $data[$k]['total_tax'] = "\t".sprintf("%.2f",round($v['nums'] * $data[$k]['purchase_price_tax'],2));
+        }
+        excelExport('purchase_detail',$header_arr, $data);
+    }
 ```
 
