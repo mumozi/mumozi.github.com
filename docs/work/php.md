@@ -214,3 +214,14 @@ class IndexController extends AbstractController
         dd(222);
 ```
 
+## 执行超时
+
+```php
+//在php.ini里面设置 
+    max_execution_time = 1800; 
+//通过PHP的ini_set 函数设置 
+    ini_set("max_execution_time", "1800"); 
+//通过set_time_limit 函数设置 
+    set_time_limit(1800) ;
+```
+

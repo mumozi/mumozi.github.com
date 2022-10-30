@@ -16,8 +16,12 @@ env('IMG_URL')
  php artisan migrate
  php artisan make:migration add_sdb_b2c_orders_table
  #填充数据
- php artisan db:seed --class=AdminTablesSeeder
+ php artisan db:seed --class=AdminMenuTableSeeder
  #生成迁移数据
  php artisan iseed my_table
+ #目录迁移及更新
+ php artisan iseed admin_menu
+ php artisan db:seed --class=AdminMenuTableSeeder
+
 ```
 

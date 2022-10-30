@@ -6,6 +6,16 @@
 
 ## 更新日记
 
+### 2022-10-30
+
+- [CSS架构系统精讲实战项目(更新中)](vue_css/_sidebar.md)
+- [定时任务](work/crontab.md)
+- [es6语法](work/es6.md)
+- [npm常用](work/npm.md)
+- [vue-element-admin常用](work/vue-admin.md)
+
+
+
 ### 2021-11-20
 
 - 小程序实战（更新中

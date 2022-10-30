@@ -82,3 +82,67 @@ ps aux|grep nginx
 tail -f access.log 
 ```
 
+
+
+```shell
+#复制文件夹
+cp -rf daojia daojia_20211216
+
+#压缩
+zip -q -r 20211216.zip daojia_20211216
+```
+
+## 定时[备份数据库](https://zhuanlan.zhihu.com/p/53911429)
+
+```sh
+#!/bin/bash
+# a ShellScript for auto DB backup and delete old backup
+# chmod 777 backup.sh
+# 00 04 * * * /data/backup/backup.sh
+# 
+backupdir=/data/backup
+time=`date +%Y%m%d%H%M%S`
+
+# mysqldump -h 10.0.0.1 -uroot -proot test | gzip > $backupdir/test_$time.sql.gz
+
+find $backupdir -name "*.sql.gz" -type f -mtime +7 -exec rm {} \; > /dev/null 2>&1
+```
+
+```
+ps -ef | grep nginx
+
+ cd  /usr/local/nginx/conf/
+
+ cd sbin/
+ ./nginx -s reload
+
+```
+
+```cmd
+location / {
+
+....配置
+
+proxy_connect_timeout 300;#延长为300秒，默认60秒
+
+proxy_send_timeout 300;#延长为300秒，默认60秒
+
+proxy_read_timeout 300;#延长为300秒，默认60秒
+
+}
+```
+
+
+
+## 图片跨域
+
+```shell
+ location ~ .*\.(gif|jpg|jpeg|png)$
+        {
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+                error_log off;
+        }
+
+```
+

@@ -20,6 +20,7 @@
   - [TP6.0高并发电商服务系统(未完结，暂停)](tp6/_sidebar.md)
   - [Lin-CMS-TP51&VUE的项目(未完结，暂停)](tp51/_sidebar.md)
   - [微信小程序的实战项目(更新中)](wx_home/_sidebar.md)
+  - [CSS架构系统精讲实战项目(更新中)](vue_css/_sidebar.md)
   
 - **随笔**
 

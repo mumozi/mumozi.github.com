@@ -17,3 +17,7 @@
 - [windows下php版本动态切换](work/php_v.md)
 - [笔记](work/note.md)
 - [tp6框架](work/tp6.md)
+- [定时任务](work/crontab.md)
+- [es6语法](work/es6.md)
+- [npm常用](work/npm.md)
+- [vue-element-admin常用](work/vue-admin.md)
